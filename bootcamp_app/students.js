@@ -10,7 +10,7 @@ const pool = new Pool({
 let cohort = process.argv[2] || '';
 let limit = process.argv[3] || 10;
 
-pool.query(`SELECT students.id, students.name as student_name, cohorts.name as cohort_name FROM students JOIN cohorts ON cohorts.id = cohort_id GROUP BY students.id, cohorts.id HAVING cohorts.name LIKE '${cohort}%' LIMIT ${limit};`)
+pool.query(`SELECT students.id, students.name as student_name, cohorts.name as cohort_name FROM students JOIN cohorts ON cohorts.id = cohort_id GROUP BY students.id, cohorts.id HAVING cohorts.name LIKE $1 LIMIT $2;`, [`%${cohort}%`, limit])
   .then(res => {
     console.log(res.rows);
     pool.end();
